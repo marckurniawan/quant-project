@@ -58,7 +58,6 @@ def detect_suspended_days(df: pd.DataFrame,) -> list[pd.Timestamp]:
 
     return list(suspended_dates)
 
-
 def load_and_validate_data(ticker:str, start:str, end:str)->pd.DataFrame:
     df = fetch_data(ticker, start, end)
     logging.info(f"Successfully downloaded {len(df)} rows for {ticker}.")
@@ -85,7 +84,7 @@ def load_and_validate_data(ticker:str, start:str, end:str)->pd.DataFrame:
     suspended_days = detect_suspended_days(df)
     if suspended_days:
         logging.warning(
-            f"Detected {len(suspended_days)} suspended day(s). "
+            f"Detected {len(suspended_days)} suspended day(s)."
             f"First dates: {suspended_days[:5]}"
         )
     else:
