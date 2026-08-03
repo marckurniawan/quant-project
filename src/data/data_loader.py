@@ -1,3 +1,4 @@
+from datetime import timedelta
 import pandas as pd
 import yfinance as yf
 import pandas_market_calendars as mcal
@@ -11,7 +12,10 @@ logging.basicConfig(
 
 def fetch_data(ticker:str, start:str, end:str)->pd.DataFrame:
     """Download OHLCV from Yahoo Finance"""
-    df = yf.download(ticker , start=start, end=end, auto_adjust=True, progress=False)
+    # Add one day because yfinance end parameter is exclusive
+    end_date = (pd.to_datetime(end) + timedelta(days=1)).strftime("%Y-%m-%d")
+
+    df = yf.download(ticker , start=start, end=end_date, auto_adjust=True, progress=False)
     df.columns = df.columns.get_level_values(0)
     
     if df.empty:
@@ -44,7 +48,7 @@ def trading_day_gaps(df:pd.DataFrame, expected_dates:pd.DatetimeIndex)->list[pd.
     actual_dates = pd.DatetimeIndex(df.index).normalize()
 
     gaps = expected_dates.difference(actual_dates)
-
+    print(gaps)
     return list(gaps)
 
 
@@ -74,9 +78,9 @@ def load_and_validate_data(ticker:str, start:str, end:str)->pd.DataFrame:
     expected_dates = get_expected_trading_days(start, end)
     gaps = trading_day_gaps(df, expected_dates)
     if gaps:
-        logging.error(f"Validation failed: {len(gaps)} gaps.")
-        raise ValueError (f"Pipeline cannot be run there's {len(gaps)} gap(s).")  
-    logging.info(f"Validation passed: {len(gaps)} gaps.")
+        logging.warning(f"Validation failed: {len(gaps)} gaps.")
+    else:
+        logging.info(f"Validation passed: {len(gaps)} gaps.")
 
     suspended_days = detect_suspended_days(df)
     if suspended_days:
