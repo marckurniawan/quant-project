@@ -48,7 +48,6 @@ def trading_day_gaps(df:pd.DataFrame, expected_dates:pd.DatetimeIndex)->list[pd.
     actual_dates = pd.DatetimeIndex(df.index).normalize()
 
     gaps = expected_dates.difference(actual_dates)
-    print(gaps)
     return list(gaps)
 
 
