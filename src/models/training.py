@@ -10,6 +10,7 @@ from src.data.data_loader import load_and_validate_data
 
 
 def prepare_training_data(df: pd.DataFrame, threshold: float = 0.01) -> pd.DataFrame:
+    """Prepare features and target labels for model training."""
     features = generate_all_features(df)
     labels = create_labels(df, threshold=threshold)
 
@@ -21,7 +22,7 @@ def prepare_training_data(df: pd.DataFrame, threshold: float = 0.01) -> pd.DataF
 
 
 def f1_trading_signals(y_true: pd.Series, y_pred: pd.Series) -> float:
-    # F1 score excluding HOLD (0)
+    """Calculate macro F1 score for BUY and SELL signals, excluding HOLD."""
     return f1_score(
         y_true,
         y_pred,
@@ -30,18 +31,20 @@ def f1_trading_signals(y_true: pd.Series, y_pred: pd.Series) -> float:
     )
 
 
-def train_model(X: pd.DataFrame, y: pd.Series) ->  tuple[RandomForestClassifier, float, dict]:
+def train_model(X: pd.DataFrame, y: pd.Series, random_state: int = 42, n_estimators: list[int] = [100, 200], max_depth: list[int] = [5, 10], n_splits: int = 5) ->  tuple[RandomForestClassifier, float, dict]:
+    """Train and tune a Random Forest using time-series cross-validation."""
+    
     model = RandomForestClassifier(
             class_weight="balanced",
-            random_state=42
+            random_state=random_state
         )
 
     param_grid = {
-        "n_estimators": [100, 200],
-        "max_depth": [5, 10]
+        "n_estimators": n_estimators,
+        "max_depth": max_depth
     }
 
-    tscv = TimeSeriesSplit(n_splits=5)
+    tscv = TimeSeriesSplit(n_splits=n_splits)
 
     trading_f1_scorer = make_scorer(f1_trading_signals)
 

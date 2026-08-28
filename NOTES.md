@@ -35,9 +35,9 @@
 - Selected `threshold=0.01` as the baseline for Milestone 5 — a reasonable balance between predictive performance and trading significance, without continuing to optimize solely for F1.   
 - Reflection: this experiment serves as a small hyperparameter search rather than an attempt to overtune the model to a single ML metric. A predictive model does not necessarily imply a profitable trading strategy; higher F1 means the model is better at predicting the defined labels, while profitability must be validated through out-of-sample trading performance after transaction costs.
 
-### Milestone 5 - Confluence / Signal Generation
+## Milestone 5 - Confluence / Signal Generation
 - Built a function to confluence between prediction from the model and `moving_average_trend` as a veto. Avoided overly complex and sophisticated method by not  choosing or combining all methods or technique such as: `weight_scoring`, `confidence_level`, etc.
-- Choose to not use square root of 252 as `trades_per_year` to avoid exaggerating the annualized `sharpe_ratio`.
+- Chose to not use square root of 252 as `trades_per_year` to avoid exaggerating the annualized `sharpe_ratio`.
 Did full pipeline test: from `load_and_validate_data` to `metrics`, turns out the `moving_average_trend` veto doesn't bring any positive impact (at least to this experiment). 
 - Findings: 
     - With veto -> 10 trades, negative expectancy(approximately -0.0168)
@@ -46,3 +46,11 @@ Did full pipeline test: from `load_and_validate_data` to `metrics`, turns out th
 - Chose to not use veto as baseline, not because it proven to be bad, but because the samples are too little.
 - Limitations: number of trades and metrics changes with every run, although the `random_state` is already set to equal 42. Small sample size, only find 90 trades in more than 4 years is not enough to support a strong statistical claim. 
 - The feature limitation identified in Milestone 4 still persists here, the features are just simply not enough to describe, reflect, and predict the blue-chip stocks that tend to have a dynamic price movements.
+
+## Milestone 6 - End-to-End Integration
+- Built:
+    - A `main.py` module to orchestrate the entire ML and run the backtesting pipeline without any manual intervention.
+    - A `persistence.py` module as a helper for `main.py` to interact with to store the model or fetch it.
+- Chose to make `/outputs` as a directory that store the existing model, so that no training needed when already did it once.
+- Added some configs to make every parameter is not hardcoded; note: all the parameters that are included in config are limited, only when it needs to be experimented with or a result of an experiment(such as: `threshold`).
+- Did some refactoring on `train_model` and `backtest_signals` functions due to config adjustments, so that it can accept config input as parameters.

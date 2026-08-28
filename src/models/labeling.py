@@ -1,6 +1,7 @@
 import pandas as pd
 
 def create_labels(df: pd.DataFrame, threshold: float = 0.01) -> pd.DataFrame:
+    """Create labels based on next-day returns."""
     df = df.copy() 
 
     future_return = df["Close"].shift(-1)/ df["Close"] - 1 

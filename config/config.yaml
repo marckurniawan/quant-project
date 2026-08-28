@@ -2,3 +2,13 @@ ticker: "BBCA.JK"
 data:
   start_date: "2022-01-01"
   end_date: "2026-07-27"
+model:
+  threshold: 0.01
+  random_state: 42
+  n_splits: 5
+  param_grid:
+    n_estimators: [100, 200]
+    max_depth: [5, 10]
+backtest:
+  buy_fee: 0.0015
+  sell_fee: 0.0025

@@ -90,6 +90,7 @@ def load_and_validate_data(ticker:str, start:str, end:str)->pd.DataFrame:
         logging.info("Validation passed: 0 suspended days.")    
 
     return df  
+    
 if __name__ == "__main__":
     
     df = load_and_validate_data("BBCA.JK", "2022-01-01", "2026-07-27")

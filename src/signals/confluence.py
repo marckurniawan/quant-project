@@ -7,9 +7,8 @@ from src.backtest.engine import backtest_signals
 from src.backtest.metrics import calculate_expectancy
 from src.backtest.metrics import calculate_sharpe_ratio
 
-# Used to veto conflicting signals
 def generate_signals(predictions: pd.Series,ma_trend: pd.Series) -> pd.Series:
-
+    """Conflicting trading signals with MA as veto"""
     signals = predictions.copy()
 
     # MA trend acts as a veto, blocking ML signals that conflict with the broader trend.
