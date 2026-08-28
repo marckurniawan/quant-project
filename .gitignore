@@ -5,3 +5,4 @@ __pycache__/
 venv/
 data_raw/
 .env
+tempCodeRunnerFile.py
