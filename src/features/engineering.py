@@ -10,7 +10,7 @@ def calculate_roc(df: pd.DataFrame, window: int = 20) ->  pd.Series:
     return df["Close"].pct_change(periods=window)  * 100
 
 
-def calculate_ma_trend(df: pd.DataFrame, fast: int = 20, slow: int = 50) ->  pd.Series:
+def calculate_ma_trend(df: pd.DataFrame, fast: int = 20, slow: int = 50) -> pd.Series:
     ma_fast = df["Close"].rolling(window=fast).mean()
     ma_slow = df["Close"].rolling(window=slow).mean()
     diff = ma_fast - ma_slow
