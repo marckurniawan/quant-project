@@ -96,6 +96,8 @@ ax.legend()
 # Chart visualization
 st.pyplot(fig)
 
+st.subheader("Backtest Performance")
+
 backtest_data = pd.DataFrame({"signal": predictions, "Close": df["Close"]})
 backtest_data = backtest_data.dropna()
 strategy_returns = backtest_signals(backtest_data, buy_fee=config["backtest"]["buy_fee"], sell_fee=config["backtest"]["sell_fee"])
@@ -105,13 +107,13 @@ duration = (df.index.max() - df.index.min()).days / 365.25
 total_trades = len(strategy_returns)
 trades_per_year = total_trades / duration
 
+# Calculate metrics
 strategy_expectancy = calculate_expectancy(strategy_returns)
 strategy_sharpe = calculate_sharpe_ratio(strategy_returns, trades_per_year=trades_per_year)
 
 buy_hold_returns = pd.Series(df["Close"]).pct_change().dropna()
 buy_hold_sharpe = calculate_sharpe_ratio(buy_hold_returns, trades_per_year=252)
 
-st.subheader("Backtest Performance")
 performance_col1, performance_col2, performance_col3 = st.columns(3) 
 
 performance_col1.metric(label="Total Trades", value=total_trades)
