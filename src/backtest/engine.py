@@ -12,7 +12,7 @@ def close_position(entry_price: float, exit_price: float, buy_fee: float = 0.001
     return net_proceeds / cost_basis - 1
 
 
-def backtest_signals(df: pd.DataFrame, signal_col: str = "signal", price_col: str = "Close", buy_fee: float = 0.0015, sell_fee: float = 0.0025) -> list[float]:
+def backtest_signals(df: pd.DataFrame, signal_col: str = "signal", price_col: str = "Close", buy_fee: float = 0.0015, sell_fee: float = 0.0025) -> list[float]: 
     """ Execute trades using T+1 execution."""
 
     returns = []

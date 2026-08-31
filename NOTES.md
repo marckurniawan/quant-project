@@ -50,7 +50,20 @@ Did full pipeline test: from `load_and_validate_data` to `metrics`, turns out th
 ## Milestone 6 - End-to-End Integration
 - Built:
     - A `main.py` module to orchestrate the entire ML and run the backtesting pipeline without any manual intervention.
-    - A `persistence.py` module as a helper for `main.py` to interact with to store the model or fetch it.
+    - A `src/models/persistence.py` module as a helper for `main.py` to interact with to store the model or fetch it.
 - Chose to make `/outputs` as a directory that store the existing model, so that no training needed when already did it once.
 - Added some configs to make every parameter is not hardcoded; note: all the parameters that are included in config are limited, only when it needs to be experimented with or a result of an experiment(such as: `threshold`).
 - Did some refactoring on `train_model` and `backtest_signals` functions due to config adjustments, so that it can accept config input as parameters.
+
+## Milestone 7 - Streamlit Dashboard
+
+- Built `app/dashboard.py` with 4 components: overview/key metrics, price chart with BUY/SELL signal markers (+ date range filter), backtest performance (expectancy, Sharpe vs buy-and-hold), and feature importance.
+- Decision: 
+    - Chose not to call `main.py` to runs the full training pipeline , while the dashboard only needs to load an already-trained model and generate predictions.
+    - Used `@st.cache_resource` and `@st.cache_data` to caching the model and the data,      avoids expensive recomputation on every user interaction.
+    - Backtest performance metrics are computed from the full dataset, independent of the chart's date range filter, due to limitations: small trades samples.
+    - Feature importance uses built-in `feature_importances_` attribute (no extra computation needed).
+- Bug: forget to use `.pct_change().dropna()` on `buy_hold_returns` an make the calculation for `buy_hold_sharpe` with actual price not with returns day-to-day.
+- Bug: filtering `predictions` for BUY/SELL signals initially attempted `df.loc[predictions == 1]` directly, which failed with an `IndexingError`. Fixed it by match the index with the actual `dataframe` first.
+- UX: added a date range picker to avoid an overlycrowded chart, with  approximately 590 raw model signals across 4.5 years, an unfiltered chart was too dense to read.
+- Polish: used `color="green"`/`color="red"` for BUY/SELL markers to match standard financial charting conventions.

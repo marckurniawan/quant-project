@@ -26,7 +26,7 @@ def main():
     model, validation_score, best_params = train_model(X, y, random_state=config["model"]["random_state"], n_estimators=config["model"]["param_grid"]["n_estimators"], max_depth=config["model"]["param_grid"]["max_depth"], n_splits=config["model"]["n_splits"])
 
     # Save model
-    save_model(model, "outputs/model.pkl    ")
+    save_model(model, "outputs/model.pkl")
     predictions = pd.Series(model.predict(X), index=X.index, name="prediction")
 
     backtest_data = (pd.DataFrame({"signal" : predictions,
@@ -49,6 +49,7 @@ def main():
     print("Total trades returns (sample):", returns[:5])
     print("Expectancy:", expectancy)
     print("Annualized Sharpe:", annualized_sharpe_ratio)
+    print(returns.min())
 
 
 if __name__ == "__main__":
