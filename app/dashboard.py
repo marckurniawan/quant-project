@@ -95,6 +95,7 @@ ax.legend()
 
 # Chart visualization
 st.pyplot(fig)
+st.caption("Green markers indicate BUY signals, while red markers indicate SELL signals.")
 
 st.subheader("Backtest Performance")
 
@@ -121,6 +122,8 @@ performance_col2.metric(label="Expectancy per Trade", value=f"{strategy_expectan
 performance_col3.metric(label="Sharpe Ratio", 
                          value=f"{strategy_sharpe:.2f}", 
                          delta=f"{strategy_sharpe - buy_hold_sharpe:+.2f} vs Buy & Hold")
+st.caption("Delta Sharpe shows how much the strategy's performance differs from a buy-and-hold approach.")
+
 
 st.subheader("Feature Importance")
 
@@ -134,3 +137,5 @@ ax.set_xlabel("Importance")
 ax.set_title("Feature Importance")
 
 st.pyplot(fig)
+
+st.caption("Longer bars indicate a feature's greater influence on the model's predictions.")
