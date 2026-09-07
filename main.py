@@ -49,7 +49,6 @@ def main():
     print("Total trades returns (sample):", returns[:5])
     print("Expectancy:", expectancy)
     print("Annualized Sharpe:", annualized_sharpe_ratio)
-    print(returns.min())
 
 
 if __name__ == "__main__":

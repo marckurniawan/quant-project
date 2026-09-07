@@ -12,3 +12,4 @@ model:
 backtest:
   buy_fee: 0.0015
   sell_fee: 0.0025
+  initial_capital : 100.0
